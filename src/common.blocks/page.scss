@@ -6,12 +6,11 @@ html, body.page {
 	font-size: $baseFontSize;
 	color: $baseFontColor;
 	background: $background;
+	&_locked {
+		overflow: hidden;
+	}
 }
 
 .page__wrapper {
 	width: 100%;
-
-	&_locked {
-		position: fixed;
-	}
 }

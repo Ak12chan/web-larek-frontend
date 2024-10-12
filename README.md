@@ -102,6 +102,46 @@ type TProductAnswer = {total: number, items: IProduct[]};
 ```
 export type TOrderAnswer = {id: string, total: number};
 ```
+Интерфейс для взаимодействия с сервером.
+```
+interface IAppApi {
+  getProductList: () => Promise<IProduct[]>;
+  postOrder: (order: IOrder) => Promise<TOrderAnswer>;
+}
+```
+Интерфейс для заполнения всплывающего окна
+```
+interface IModalData {
+  content: HTMLElement;
+}
+```
+Интерфейс для заполнения основной страницы.
+```
+interface IPage {
+  counter: number;
+  catalog: HTMLElement[];
+  locked(value: boolean): void;
+}
+```
+Интерфейс для наполнение корзины.
+```
+interface IBasket {
+  list: HTMLElement[];
+  price: number;
+}
+```
+Интерфейс для отображения окна успешного оформления.
+```
+interface ISuccess {
+  total: number;
+}
+```
+Интерфейс для передачи идентификатора товара.
+```
+interface IId {
+  id: string;
+}
+```
 ## Архитектура приложения
 Приложение разделено на 3 слоя и использует парадигму MVP
 - Слой Model отвечает за данные и работу с ними
