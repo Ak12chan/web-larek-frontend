@@ -73,6 +73,7 @@ events.on('bids:add', (item: IId) => {
 events.on('bids:remove', (item: IId) => {
 	orderData.deleteProduct(item.id);
 	events.emit('bids:change');
+	events.emit('bids:render'); // Обновляем отображение корзины
 });
 
 events.on('bids:change', () => {
