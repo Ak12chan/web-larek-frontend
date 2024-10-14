@@ -62,15 +62,14 @@ events.on('bids:add', (item: IId) => {
 events.on('bids:remove', (item: IId) => {
 	orderData.deleteProduct(item.id);
 	events.emit('bids:change');
-	events.emit('bids:render');
 });
 
 events.on('bids:change', () => {
 	page.counter = orderData.getCount();
-	// Здесь можно обновить другие элементы страницы, если необходимо
 });
 
-events.on('bids:render', () => {
+// Я не уверен что это правильное решение. Подскажи как правильно исправить твоё замечание, просто наствник мне сейчас не отвечает.
+events.on('basket:open', () => {
 	let count = 1;
 	const basketArray = orderData.getProducts().map(item => {
 		const cardInstant = new Card(cloneTemplate(cardBasketTemplate), events);
@@ -79,6 +78,9 @@ events.on('bids:render', () => {
 		return cardInstant.render(item);
 	});
 	modal.render({ content: basket.render({ list: basketArray, price: orderData.getTotal() }) });
+});
+document.querySelector('.header__basket').addEventListener('click', () => {
+	events.emit('basket:open');
 });
 
 events.on('order:render', () => {
