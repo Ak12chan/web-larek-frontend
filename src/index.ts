@@ -66,10 +66,6 @@ events.on('bids:remove', (item: IId) => {
 
 events.on('bids:change', () => {
 	page.counter = orderData.getCount();
-});
-
-// Я не уверен что это правильное решение. Подскажи как правильно исправить твоё замечание, просто наствник мне сейчас не отвечает.
-events.on('basket:open', () => {
 	let count = 1;
 	const basketArray = orderData.getProducts().map(item => {
 		const cardInstant = new Card(cloneTemplate(cardBasketTemplate), events);
@@ -77,10 +73,12 @@ events.on('basket:open', () => {
 		count++;
 		return cardInstant.render(item);
 	});
-	modal.render({ content: basket.render({ list: basketArray, price: orderData.getTotal() }) });
+	basket.render({ list: basketArray, price: orderData.getTotal() });
 });
-document.querySelector('.header__basket').addEventListener('click', () => {
-	events.emit('basket:open');
+
+// Обработчик для открытия корзины
+events.on('bids:render', () => {
+	modal.render({content: basket.render()})
 });
 
 events.on('order:render', () => {
@@ -98,6 +96,7 @@ events.on('success:render', (data: TOrderContact) => {
 	appApi.postOrder(orderData.getOrder())
 		.then((data: TOrderAnswer) => {
 			orderData.clearOrder();
+			events.emit('bids:change'); // Обновляем корзину после успешного заказа
 			modal.render({ content: success.render({ total: data.total }) });
 		})
 		.catch(err => console.error(err));
